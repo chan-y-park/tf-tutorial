@@ -5,7 +5,10 @@ import tensorflow as tf
 import numpy as np
 
 import model_inputs
-import model_prediction
+#from cifar10 import distorted_inputs 
+from model_prediction import inference
+#from cifar10 import inference
+
 import flags
 
 
@@ -18,7 +21,6 @@ def get_total_loss(logits, labels):
     tf.add_to_collection('losses', cross_entropy_mean)
 
     losses = tf.get_collection('losses')
-    tf.Print(losses, [losses])
     loss_value = tf.add_n(losses, name='total_loss')
     loss_value = tf.Print(loss_value, [loss_value])
     return loss_value
@@ -69,12 +71,14 @@ def get_train_op(total_loss, global_step):
 
 
 def train():
-    with tf.Graph().as_default():
+    g = tf.Graph()
+    with g.as_default():
         global_step = tf.Variable(0, trainable=False)
 
         images, labels = model_inputs.inputs()
+        #images, labels = distorted_inputs()
 
-        logits = model_prediction.inference(images)
+        logits = inference(images)
 
         loss = get_total_loss(logits, labels)
 
@@ -98,6 +102,7 @@ def train():
             start_time = time.time()
             _, loss_value = sess.run([train_op, loss])
             duration = time.time() - start_time
+            losses = tf.get_collection('losses')
 
             assert (not np.isnan(loss_value))
 

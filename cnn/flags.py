@@ -16,4 +16,4 @@ MOVING_AVERAGE_DECAY = 0.9999
 
 train_dir = 'train'
 #max_steps = 1000000 
-max_steps = 1000 
+max_steps = 10000

@@ -83,9 +83,13 @@ def inputs(
     }
     if distort:
         kwargs['min_after_dequeue'] = min_queue_examples
-        images, label_batch = tf.train.shuffle_batch([image, label], **kwargs)
+        images, label_batch = tf.train.shuffle_batch(
+            [float_image, label], **kwargs
+        )
     else:
-        images, label_batch = tf.train.batch([image, label], **kwargs)
+        images, label_batch = tf.train.batch(
+            [float_image, label], **kwargs
+        )
 
     tf.image_summary('images', images)
 

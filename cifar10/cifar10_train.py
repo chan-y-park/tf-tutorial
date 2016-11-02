@@ -44,11 +44,12 @@ import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 
-from tensorflow.models.image.cifar10 import cifar10
+#from tensorflow.models.image.cifar10 import cifar10
+import cifar10
 
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string('train_dir', '/tmp/cifar10_train',
+tf.app.flags.DEFINE_string('train_dir', 'train',
                            """Directory where to write event logs """
                            """and checkpoint.""")
 tf.app.flags.DEFINE_integer('max_steps', 1000000,
@@ -71,6 +72,7 @@ def train():
 
     # Calculate loss.
     loss = cifar10.loss(logits, labels)
+    loss = tf.Print(loss, [loss])
 
     # Build a Graph that trains the model with one batch of examples and
     # updates the model parameters.
